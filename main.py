@@ -7,23 +7,31 @@ import sys
 import argparse
 # threads
 import control
-import input
+# import input
+import sim_input as input
 
 
 # collects user inputs and sends to handler thread
-def input_thread(buf, q):
-    p = input.InputThread()
+def input_thread(buf, q, *args, **kwargs):
+    p = input.InputThread(buf, q, *args, **kwargs)
     p.run()
 
 # handles user inputs sent from input thread
-def handler_thread(buf, q):
-    pass
+def handler_thread(buf, q, *args, **kwargs):
+    p = control.ControlThread(buf, q, *args, **kwargs)
+    p.run()
 
 def main():
 
     ARRAY_SIZE = 4
     QUEUE_LEN = 20
 
+    INPUT_BUFFER_IDX = {
+        'L-U/D':0,
+        'R-U/D':1,
+        'L-R/L':2,
+        'R-R/L':3}
+    
     """ real time input buffer
     thread-safe buffer to share data between a producer and consumer
     data is not guaranteed to be received; data can be updated by 
@@ -31,8 +39,13 @@ def main():
 
     meant to be used by controller joysticks or other inputs with 
     frequent updates and intermediate values that can be ignored
+
+    Index 0: Left Stick - U/D - fully up is 100.0
+          1: Right Stick - U/D - fully up is 100.0
+          2: Left Stick - L/R - fully left is 100.0
+          3: Right Stick - L/R - fully left is 100.0
     """
-    input_buf = mp.Array(ctypes.c_double, (0.0 for i in range(ARRAY_SIZE)))
+    input_buf = mp.Array(ctypes.c_double, [0.0 for i in range(ARRAY_SIZE)])
 
     """ input queue
     thread-safe queue to share data between a producer and consumer
@@ -46,8 +59,12 @@ def main():
 
     # start processes
 
-    input = mp.Process(target = handler_thread, args=(input_buf, input_queue))
-    handler = mp.Process(target = handler_thread, args=(input_buf, input_queue))
+    input = mp.Process(target = input_thread, 
+            args=(input_buf, input_queue), 
+            kwargs={'buf_idx':INPUT_BUFFER_IDX})
+    handler = mp.Process(target = handler_thread, 
+            args=(input_buf, input_queue),
+            kwargs={'buf_idx':INPUT_BUFFER_IDX})
     
     input.start()
     handler.start()
