@@ -5,10 +5,15 @@ import os
 import signal
 import sys
 import argparse
+# threads
+import control
+import input
+
 
 # collects user inputs and sends to handler thread
 def input_thread(buf, q):
-    pass
+    p = input.InputThread()
+    p.run()
 
 # handles user inputs sent from input thread
 def handler_thread(buf, q):
@@ -16,7 +21,7 @@ def handler_thread(buf, q):
 
 def main():
 
-    ARRAY_SIZE = 3
+    ARRAY_SIZE = 4
     QUEUE_LEN = 20
 
     """ real time input buffer

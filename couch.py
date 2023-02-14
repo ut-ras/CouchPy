@@ -1,3 +1,8 @@
+"""
+Very Basic Couch Control
+Caution(!) will be very jerky
+"""
+
 from time import sleep
 import os
 from sabertooth2x60 import SabertoothPacketized
