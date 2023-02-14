@@ -12,8 +12,8 @@ class ControlThread():
         self.port = port
         self.motor_controller = motor.MotorController(port)
 
-        self.control_l = ControlThread.ControlLoop((10, 10))
-        self.control_r = ControlThread.ControlLoop((10, 10))
+        self.control_l = ControlThread.ControlLoop((10, 10, 5))
+        self.control_r = ControlThread.ControlLoop((10, 10, 5))
         self.buf_idx = kwargs.get('buf_idx', None)
         self.period = kwargs.get('period', 0.02)
 

@@ -44,17 +44,12 @@ class InputThread():
         self.q.put((id, value))
 
     def run(self):
-        for code, value in [
-            (1, 127),
-            (5, 127),
-            (1, 255),
-            (5, 255),
-            (1, 0),
-            (5, 0),
-            (1, 127),
-            (5, 127)
-        ] :
-            print('new input: ', value)
-            self.input_functions[code](value)
-            time.sleep(2)
+        while True:
+            for r, l in [
+                ((1, 0), (5, 0)),
+                ((1, 255), (5, 255)),
+            ] :
+                self.input_functions[r[0]](r[1])
+                self.input_functions[l[0]](l[1])
+                time.sleep(2)
 
