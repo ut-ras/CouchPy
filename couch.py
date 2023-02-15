@@ -1,10 +1,13 @@
-"""
+#!/usr/bin/env python3
+"""couch.py
 Very Basic Couch Control
 Caution(!) will be very jerky
+
+Author: Tianda Huang
+Date:   2023/02/01
 """
 
 from time import sleep
-import os
 from sabertooth2x60 import SabertoothPacketized
 from game_controllers import LogitechGamepadF310
 from evdev import (InputDevice, list_devices)

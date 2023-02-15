@@ -1,3 +1,10 @@
+"""motor.py
+Motor Controller wrapper interface
+
+Author: Tianda Huang
+Date:   2023/02/01
+"""
+
 from sabertooth2x60 import SabertoothPacketized
 
 class MotorController():

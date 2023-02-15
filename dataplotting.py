@@ -1,5 +1,18 @@
-import sys
+"""dataplotting.py
+Simple Matplotlib live plotting
+Updates as fast as you can call update() and as fast as the CPU can run update() 
 
+Author: Tianda Huang
+Date:   2023/02/01
+
+Usage:
+    plot = DataPlotting(...)
+    while True:
+        plot.update()
+        sleep(...)
+"""
+
+import sys
 import matplotlib.pyplot as plt
 from collections import deque
 
@@ -9,7 +22,7 @@ class DataPlotting:
     Uses blitting for responsive graph updates
     """
 
-    def __init__(self, graphics_queues : dict[deque], colors : dict[tuple], *args, **kwargs) -> None:
+    def __init__(self, graphics_queues : dict[deque], colors : dict[tuple] = None, *args, **kwargs) -> None:
         self.queues = graphics_queues
         self.colors = colors
 

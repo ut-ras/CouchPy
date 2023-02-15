@@ -1,10 +1,16 @@
+"""sim_input.py
+Simulated Controller Input
+Controller inputs are fed into a buffer and/or a queue in a loop based 
+on predefined inputs.
+
+Author: Tianda Huang
+Date:   2023/02/01
+"""
+
 import multiprocessing as mp
-import threading
 import ctypes
 import functools
 import time
-
-DEAD_ZONE_PERCENT = 5
 
 class InputThread():
     """
@@ -17,6 +23,7 @@ class InputThread():
         self.buf = buffer
         self.q = queue
         self.buf_idx = kwargs.get('buf_idx', None)
+        self.dead_zone = kwargs.get('dead_zone', 5.0)   # dead zone in percent
 
         # input function definitions
         self.input_functions = {
@@ -27,18 +34,17 @@ class InputThread():
             5:functools.partial(self._generic_joystick_queue_event, 5)
         }
 
-    @staticmethod
-    def _map_joystick(value:int) -> ctypes.c_double:
+    def _map_joystick(self, value:int) -> ctypes.c_double:
         percent = ((-value + 127) * 100) / 128
-        if -DEAD_ZONE_PERCENT <= percent and percent <= DEAD_ZONE_PERCENT:
+        if -self.dead_zone <= percent and percent <= self.dead_zone:
             percent = 0.0
         return ctypes.c_double(percent)
 
     def _generic_joystick_event(self, buffer_index:int, value:int):
-        self.buf[buffer_index] = InputThread._map_joystick(value)
+        self.buf[buffer_index] = self._map_joystick(value)
 
     def _generic_joystick_queue_event(self, id, value:int):
-        self.q.put((id, InputThread._map_joystick(value)))
+        self.q.put((id, self._map_joystick(value)))
 
     def _generic_button_event(self, id, value:int):
         self.q.put((id, value))

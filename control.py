@@ -1,8 +1,33 @@
+"""control.py
+Control Loop
+Controls motors based on controller input and control loop output
+
+The open-loop control scheme is a multi-order moving average filter:
+Desired speed setpoints (inputs from controller) are averaged in a moving 
+filter; outputs from the first layer moving filter are averaged, etc.
+The average of the final moving filter is the actual output speed.
+
+Motor speeds are sent to motor controllers periodically
+
+Simulation:
+    To simulate motor output, `import sim_motor as motor` in `control.py`
+    Simulated motor output is a live-graph plotting current motor output values
+
+Author: Tianda Huang
+Date:   2023/02/01
+
+Usage:
+    run
+        main.py --help
+    for a description of possible command line arguments
+"""
+
 import multiprocessing as mp
 import time
+from collections import deque
+
 # import motor
 import sim_motor as motor
-from collections import deque
 
 class ControlThread():
 

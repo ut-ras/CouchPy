@@ -1,3 +1,11 @@
+"""sim_motor.py
+Simulated Motor Controller
+Uses plotting from `dataplotting.py` to visualize motor speeds
+
+Author: Tianda Huang
+Date:   2023/02/01
+"""
+
 import dataplotting
 from collections import deque
 

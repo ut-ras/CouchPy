@@ -1,6 +1,13 @@
-from time import sleep
-import serial
+"""sabertooth2x60.py
+Driver for interfacing with two Sabertooth2x60 motor controllers
+Uses packetized serial mode for communication 
 
+Author: Tianda Huang
+Date:   2023/02/01
+"""
+
+import time
+import serial
 
 class SabertoothPacketized():
 
@@ -26,7 +33,7 @@ class SabertoothPacketized():
     MOTOR_REV_OFS = 1
 
     def __init__(self, port, baudrate=9600):
-        self.__serial = serial.Serial(
+        self._serial = serial.Serial(
                 port=port, 
                 baudrate=baudrate, 
                 timeout=1, 
@@ -41,16 +48,16 @@ class SabertoothPacketized():
         motor_value = int(127 * abs(speed) / 100.0)
         cmd1 = self.MOTOR1_FWD + (self.MOTOR_REV_OFS if speed < 0 else 0)
         cmd2 = self.MOTOR2_FWD + (self.MOTOR_REV_OFS if speed < 0 else 0)
-        self.__send_packetized(self.ADDRESS_RIGHT, cmd1, motor_value)
-        self.__send_packetized(self.ADDRESS_RIGHT, cmd2, motor_value)
+        self._send_packetized(self.ADDRESS_RIGHT, cmd1, motor_value)
+        self._send_packetized(self.ADDRESS_RIGHT, cmd2, motor_value)
 
     # speed should be a float from -100 to 100, negative for backwards
     def motors_set_left(self, speed : float):
         motor_value = int(127 * abs(speed) / 100.0)
         cmd1 = self.MOTOR1_FWD + (self.MOTOR_REV_OFS if speed < 0 else 0)
         cmd2 = self.MOTOR2_FWD + (self.MOTOR_REV_OFS if speed < 0 else 0)
-        self.__send_packetized(self.ADDRESS_LEFT, cmd1, motor_value)
-        self.__send_packetized(self.ADDRESS_LEFT, cmd2, motor_value)
+        self._send_packetized(self.ADDRESS_LEFT, cmd1, motor_value)
+        self._send_packetized(self.ADDRESS_LEFT, cmd2, motor_value)
     
     def baudrate_set(self, baudrate):
         baudrates = {
@@ -65,24 +72,24 @@ class SabertoothPacketized():
         # we have no idea the existing baudrate so we send with all.
         baudrate_id = baudrates[baudrate]
         for br in baudrates:
-            self.__serial.baudrate = br
-            self.__send_packetized(
+            self._serial.baudrate = br
+            self._send_packetized(
                     self.ADDRESS_LEFT, 
                     self.COMMAND_TABLE['BAUD_RATE'], 
                     baudrate_id)
-            sleep(0.05)
-            self.__send_packetized(
+            time.sleep(0.05)
+            self._send_packetized(
                     self.ADDRESS_RIGHT, 
                     self.COMMAND_TABLE['BAUD_RATE'], 
                     baudrate_id)
-            sleep(0.05)
-        self.__serial.baudrate = baudrate
+            time.sleep(0.05)
+        self._serial.baudrate = baudrate
 
-    def __send_packetized(self, address, command, value):
+    def _send_packetized(self, address, command, value):
         # packet is 3-bytes:
         # byte 1 = address, byte 2 = command, byte 3 = value, byte 4 = 7 bit checksum
         # all addresses should be > 128, all commands/values should be under 128
         packet = bytearray((
                 address, command, value, 
                 (address + command + value) & 127))
-        self.__serial.write(data=packet)
+        self._serial.write(data=packet)
