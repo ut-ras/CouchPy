@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2023 UT Longhorn Racing Solar
 """couch.py
 Very Basic Couch Control
 Caution(!) will be very jerky

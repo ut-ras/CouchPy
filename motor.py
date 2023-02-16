@@ -1,3 +1,4 @@
+# Copyright (c) 2023 UT Longhorn Racing Solar
 """motor.py
 Motor Controller wrapper interface
 

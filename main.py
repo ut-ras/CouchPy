@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Copyright (c) 2023 UT Longhorn Racing Solar
 """main.py
 CouchBot (Python Implementation) Main File
 Launches processes for handling controller inputs and running motors

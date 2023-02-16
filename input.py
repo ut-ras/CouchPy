@@ -1,3 +1,4 @@
+# Copyright (c) 2023 UT Longhorn Racing Solar
 """input.py
 Controller Input for Logitech F310
 Controller inputs are collected asynchronously and inserted into 
