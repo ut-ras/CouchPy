@@ -48,7 +48,7 @@ The newest iteration (2022-2023)
 	*In tmux session:*
 
 	```
-	& sudo python3 /home/CouchPy2/main.py
+	& sudo python3 /home/pi/CouchPy2/main.py
 	```
 
 
