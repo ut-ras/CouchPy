@@ -1,4 +1,3 @@
-# Copyright (c) 2023 UT Longhorn Racing Solar
 """control.py
 Control Loop
 Controls motors based on controller input and control loop output

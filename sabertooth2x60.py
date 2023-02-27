@@ -1,4 +1,3 @@
-# Copyright (c) 2023 UT Longhorn Racing Solar
 """sabertooth2x60.py
 Driver for interfacing with two Sabertooth2x60 motor controllers
 Uses packetized serial mode for communication 

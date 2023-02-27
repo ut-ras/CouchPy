@@ -1,4 +1,3 @@
-# Copyright (c) 2023 UT Longhorn Racing Solar
 """sim_motor.py
 Simulated Motor Controller
 Uses plotting from `dataplotting.py` to visualize motor speeds

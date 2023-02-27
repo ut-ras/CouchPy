@@ -1,4 +1,3 @@
-# Copyright (c) 2023 UT Longhorn Racing Solar
 """sim_input.py
 Simulated Controller Input
 Controller inputs are fed into a buffer and/or a queue in a loop based 

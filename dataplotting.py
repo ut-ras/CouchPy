@@ -1,4 +1,3 @@
-# Copyright (c) 2023 UT Longhorn Racing Solar
 """dataplotting.py
 Simple Matplotlib live plotting
 Updates as fast as you can call update() and as fast as the CPU can run update() 
